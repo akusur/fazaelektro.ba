@@ -1,0 +1,41 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h2>⚡ Faza Elektroinstalacije</h2>
+			<p>
+				Dobrodošli u Fazu Elektroinstalacije - vašeg pouzdanog partnera za sve vrste elektroinstalatarskih radova. 
+				Sa bogatim iskustvom i stručnjacima na čelu, mi osiguravamo najkvalitetnije usluge za vaše rezidencijalne, 
+				komercijalne i industrijske potrebe.
+			</p>
+			<h2>Naše Usluge</h2>
+			<ul>
+				<li><strong>Elektroinstalatarski radovi</strong> - Kompletan spektar elektroinstalacija za nove i postojeće objekte</li>
+				<li><strong>Održavanje i popravke</strong> - Brza i pouzdana intervencija 24/7</li>
+				<li><strong>Projektovanje</strong> - Profesionalno projektovanje prema važećim standardima i propisima</li>
+				<li><strong>Sertifikacija i pregled</strong> - Ispunjavanje svih preuzetih obaveza i sertifikacija</li>
+				<li><strong>Energetska efikasnost</strong> - Savremena rešenja za uštedu energije</li>
+			</ul>
+			<p>
+				Naš tim stručnjaka je spreman da odgovori na sve vaše izazove i da pruži profesionalno rešenje. 
+				Koristimo samo kvalitetne materijale i najnoviju opremu kako bismo osigurali dugotrajnost i sigurnost svih instalacija.
+			</p>
+			<p>
+				Pogledajte <a href="/blog">naše projekte</a> kako bismo vam pokazali primere naših uspešnih realizacija, 
+				ili nas <a href="/about">kontaktirajte</a> kako biste saznali više o tome kako možemo pomoći vašem poslovanju.
+			</p>
+		</main>
+		<Footer />
+	</body>
+</html>
