@@ -7,35 +7,66 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h2>⚡ Faza Elektroinstalacije</h2>
-			<p>
-				Dobrodošli u Fazu Elektroinstalacije - vašeg pouzdanog partnera za sve vrste elektroinstalatarskih radova. 
-				Sa bogatim iskustvom i stručnjacima na čelu, mi osiguravamo najkvalitetnije usluge za vaše rezidencijalne, 
-				komercijalne i industrijske potrebe.
-			</p>
-			<h2>Naše Usluge</h2>
-			<ul>
-				<li><strong>Elektroinstalatarski radovi</strong> - Kompletan spektar elektroinstalacija za nove i postojeće objekte</li>
-				<li><strong>Održavanje i popravke</strong> - Brza i pouzdana intervencija 24/7</li>
-				<li><strong>Projektovanje</strong> - Profesionalno projektovanje prema važećim standardima i propisima</li>
-				<li><strong>Sertifikacija i pregled</strong> - Ispunjavanje svih preuzetih obaveza i sertifikacija</li>
-				<li><strong>Energetska efikasnost</strong> - Savremena rešenja za uštedu energije</li>
-			</ul>
-			<p>
-				Naš tim stručnjaka je spreman da odgovori na sve vaše izazove i da pruži profesionalno rešenje. 
-				Koristimo samo kvalitetne materijale i najnoviju opremu kako bismo osigurali dugotrajnost i sigurnost svih instalacija.
-			</p>
-			<p>
-				Pogledajte <a href="/blog">naše projekte</a> kako bismo vam pokazali primere naših uspešnih realizacija, 
-				ili nas <a href="/about">kontaktirajte</a> kako biste saznali više o tome kako možemo pomoći vašem poslovanju.
-			</p>
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Pouzdano, brzo i profesionalno</p>
+          <h1>Faza Elektroinstalacije</h1>
+          <p class="hero-text">
+            Mi dizajniramo, instaliramo i održavamo elektroinstalacije koje rade bez problema.
+            Od novih objekata do hitnih popravki, naš tim pruža sigurnost, efikasnost i elegantna rešenja za svaki prostor.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="/about">Saznajte više</a>
+            <a class="button secondary" href="/blog">Pogledajte projekte</a>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <h3>Kompletna elektroinstalacija</h3>
+            <p>Od planiranja i projektovanja do završne montaže i certifikacije – sve usluge na jednom mestu.</p>
+          </div>
+          <div class="stat-card">
+            <h3>24/7 hitna podrška</h3>
+            <p>Brzi odgovori i hitne intervencije kada je najvažnije, sa fleksibilnim terminima i pouzdanošću.</p>
+          </div>
+          <div class="stat-card">
+            <h3>Energetska ušteda</h3>
+            <p>Savremena rešenja za veću efikasnost i niže troškove, sa fokusom na dugovečnost i sigurnost.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="features">
+        <article class="feature-card">
+          <h3>Elektroinstalacijski radovi</h3>
+          <p>Kompletna instalacija za nove objekte, renovacije i adaptacije, urađena po standardima i bez kompromisa.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Održavanje i popravke</h3>
+          <p>Preventivno održavanje i hitne popravke sa fokusom na sigurnost i trajnost sistema.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Projektovanje i certifikacija</h3>
+          <p>Stručno projektovanje instalacija sa jasnom dokumentacijom, ovjerama i potvrdom kvaliteta.</p>
+        </article>
+      </section>
+
+      <section class="cta-card">
+        <div>
+          <p class="eyebrow">Kontakt</p>
+          <h2>Spremni za bezbjednu i modernu elektroinstalaciju?</h2>
+          <p>Javite nam se danas i dobijte tačnu procjenu prilagođenu vašim potrebama.</p>
+        </div>
+        <a class="button primary" href="/about">Kontaktirajte nas</a>
+      </section>
+    </main>
+    <Footer />
+  </body>
 </html>
