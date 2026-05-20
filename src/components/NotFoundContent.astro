@@ -1,0 +1,62 @@
+---
+import { SITE_TITLE } from '../consts';
+---
+<div class="not-found-page">
+	<img class="not-found-logo" src="/faza-logo.png" alt={SITE_TITLE} />
+	<p class="eyebrow">404</p>
+	<h1>Stranica nije pronađena</h1>
+	<a class="button primary" href="/">Idi na početnu</a>
+</div>
+<style>
+	.not-found-page {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 4rem 1.5rem;
+		text-align: center;
+	}
+
+	.not-found-logo {
+		display: block;
+		margin: 0 auto 2rem;
+		width: 120px;
+		height: auto;
+	}
+
+	.eyebrow {
+		text-transform: uppercase;
+		letter-spacing: 0.16em;
+		font-size: 0.85rem;
+		margin-bottom: 1rem;
+		color: rgb(var(--accent));
+	}
+
+	h1 {
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		margin: 0 0 1rem;
+	}
+
+	.hero-text {
+		max-width: 38rem;
+		margin: 0 auto 2rem;
+		color: rgb(var(--gray-dark));
+		line-height: 1.8;
+	}
+
+	.button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.95rem 1.6rem;
+		border-radius: 999px;
+		font-weight: 700;
+		text-decoration: none;
+		color: rgb(66, 110, 222);
+		background: rgb(var(--accent));
+		transition: transform 0.2s ease, background-color 0.2s ease;
+	}
+
+	.button:hover {
+		transform: translateY(-1px);
+		background: rgb(var(--accent-dark));
+	}
+</style>

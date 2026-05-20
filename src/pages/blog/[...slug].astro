@@ -1,20 +1,23 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import NotFoundContent from '../../components/NotFoundContent.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
-export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
-}
-type Props = CollectionEntry<'blog'>;
-
-const post = Astro.props;
-const { Content } = await render(post);
+Astro.response.status = 404;
 ---
 
-<BlogPost {...post.data}>
-	<Content />
-</BlogPost>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`404 — ${SITE_TITLE}`} description="Stranica nije pronađena" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<NotFoundContent />
+		</main>
+		<Footer />
+	</body>
+</html>
