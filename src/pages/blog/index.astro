@@ -2,21 +2,19 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
-import NotFoundContent from '../../components/NotFoundContent.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
-
-Astro.response.status = 404;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`404 — ${SITE_TITLE}`} description="Stranica nije pronađena" />
+		<BaseHead title={`Blog — ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
 		<Header />
 		<main>
-			<NotFoundContent />
+			<h1>Blog</h1>
+			<p>Blog posts coming soon...</p>
 		</main>
 		<Footer />
 	</body>
