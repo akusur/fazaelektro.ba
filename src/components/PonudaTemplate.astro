@@ -1279,7 +1279,13 @@ const baseURL = import.meta.env.BASE_URL;
       // Print / PDF Button
       document.getElementById('btn-print')?.addEventListener('click', () => {
         setPdfExportMode(true);
-        requestAnimationFrame(() => window.print());
+        requestAnimationFrame(() => {
+          try {
+            window.print();
+          } finally {
+            setTimeout(() => setPdfExportMode(false), 0);
+          }
+        });
       });
 
       // LocalStorage Draft Management
