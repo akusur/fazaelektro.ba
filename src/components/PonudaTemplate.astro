@@ -599,6 +599,11 @@ const baseURL = import.meta.env.BASE_URL;
         display: none;
       }
 
+      .pdf-export .col-actions,
+      .pdf-export .btn-delete-item {
+        display: none !important;
+      }
+
       /* PRINT STYLES - CRITICAL FOR CLEAN A4 PDF OUTPUT */
       @media print {
         @page {
@@ -1241,6 +1246,13 @@ const baseURL = import.meta.env.BASE_URL;
       // VAT Select listener
       document.getElementById('vat-rate-select')?.addEventListener('change', renderItems);
 
+      function setPdfExportMode(isExporting) {
+        document.body.classList.toggle('pdf-export', isExporting);
+      }
+
+      window.addEventListener('beforeprint', () => setPdfExportMode(true));
+      window.addEventListener('afterprint', () => setPdfExportMode(false));
+
       // Quote Number input listener syncs bank reference
       document.getElementById('quote-number')?.addEventListener('input', (e) => {
         document.getElementById('bank-reference').value = e.target.value;
@@ -1266,7 +1278,8 @@ const baseURL = import.meta.env.BASE_URL;
 
       // Print / PDF Button
       document.getElementById('btn-print')?.addEventListener('click', () => {
-        window.print();
+        setPdfExportMode(true);
+        requestAnimationFrame(() => window.print());
       });
 
       // LocalStorage Draft Management
