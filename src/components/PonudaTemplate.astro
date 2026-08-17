@@ -1250,8 +1250,15 @@ const baseURL = import.meta.env.BASE_URL;
         document.body.classList.toggle('pdf-export', isExporting);
       }
 
+      function handlePrintDialogClose() {
+        setTimeout(() => setPdfExportMode(false), 0);
+      }
+
       window.addEventListener('beforeprint', () => setPdfExportMode(true));
-      window.addEventListener('afterprint', () => setPdfExportMode(false));
+      window.addEventListener('afterprint', () => {
+        window.removeEventListener('focus', handlePrintDialogClose);
+        setPdfExportMode(false);
+      });
 
       // Quote Number input listener syncs bank reference
       document.getElementById('quote-number')?.addEventListener('input', (e) => {
@@ -1279,13 +1286,8 @@ const baseURL = import.meta.env.BASE_URL;
       // Print / PDF Button
       document.getElementById('btn-print')?.addEventListener('click', () => {
         setPdfExportMode(true);
-        requestAnimationFrame(() => {
-          try {
-            window.print();
-          } finally {
-            setTimeout(() => setPdfExportMode(false), 0);
-          }
-        });
+        window.addEventListener('focus', handlePrintDialogClose, { once: true });
+        requestAnimationFrame(() => window.print());
       });
 
       // LocalStorage Draft Management
