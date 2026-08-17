@@ -1254,7 +1254,15 @@ const baseURL = import.meta.env.BASE_URL;
         setTimeout(() => setPdfExportMode(false), 0);
       }
 
-      window.addEventListener('beforeprint', () => setPdfExportMode(true));
+      function registerPrintCleanupFallback() {
+        window.removeEventListener('focus', handlePrintDialogClose);
+        window.addEventListener('focus', handlePrintDialogClose, { once: true });
+      }
+
+      window.addEventListener('beforeprint', () => {
+        setPdfExportMode(true);
+        registerPrintCleanupFallback();
+      });
       window.addEventListener('afterprint', () => {
         window.removeEventListener('focus', handlePrintDialogClose);
         setPdfExportMode(false);
@@ -1286,7 +1294,7 @@ const baseURL = import.meta.env.BASE_URL;
       // Print / PDF Button
       document.getElementById('btn-print')?.addEventListener('click', () => {
         setPdfExportMode(true);
-        window.addEventListener('focus', handlePrintDialogClose, { once: true });
+        registerPrintCleanupFallback();
         requestAnimationFrame(() => window.print());
       });
 
