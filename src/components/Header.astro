@@ -1,12 +1,14 @@
 ---
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+
+const baseURL = import.meta.env.BASE_URL;
 ---
 
 <header>
 	<nav>
-		<a href="/" class="logo">
-			<img src="/faza-logo.png" alt={SITE_TITLE} />
+		<a href={baseURL} class="logo">
+			<img src={`${baseURL}faza-logo.png`} alt={SITE_TITLE} />
 			
 		</a>
 		<div class="internal-links">

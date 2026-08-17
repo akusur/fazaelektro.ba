@@ -1,0 +1,1455 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import { SITE_TITLE } from '../consts';
+
+const baseURL = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="bs">
+  <head>
+    <BaseHead
+      title={`Ponuda za elektroinstalacijske radove — ${SITE_TITLE}`}
+      description="Predložak i kreiranje ponuda za elektroinstalacijske radove"
+    />
+    <style>
+      :root {
+        --paper-width: 210mm;
+        --paper-min-height: 297mm;
+        --accent-blue: #1d6dff;
+        --accent-dark: #1249b5;
+        --text-color: #1f2937;
+        --border-color: #e5e7eb;
+        --bg-preview: #eef2f6;
+      }
+
+      body {
+        background-color: var(--bg-preview);
+        color: var(--text-color);
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* Control Toolbar styling */
+      .toolbar-container {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(12px);
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .toolbar-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .toolbar-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      .toolbar-title span.badge {
+        background: rgba(29, 109, 255, 0.3);
+        color: #60a5fa;
+        border: 1px solid rgba(96, 165, 250, 0.3);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .toolbar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-tool {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+      }
+
+      .btn-tool.btn-primary {
+        background: var(--accent-blue);
+        color: white;
+        box-shadow: 0 4px 12px rgba(29, 109, 255, 0.3);
+      }
+      .btn-tool.btn-primary:hover {
+        background: var(--accent-dark);
+      }
+
+      .btn-tool.btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: #f3f4f6;
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      .btn-tool.btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+
+      .btn-tool.btn-accent {
+        background: #10b981;
+        color: white;
+      }
+      .btn-tool.btn-accent:hover {
+        background: #059669;
+      }
+
+      .btn-tool.btn-danger {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border-color: rgba(239, 68, 68, 0.3);
+      }
+      .btn-tool.btn-danger:hover {
+        background: rgba(239, 68, 68, 0.4);
+        color: #fff;
+      }
+
+      .presets-dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .presets-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 105%;
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        min-width: 320px;
+        z-index: 105;
+        overflow: hidden;
+      }
+
+      .presets-dropdown:hover .presets-menu,
+      .presets-dropdown:focus-within .presets-menu {
+        display: block;
+      }
+
+      .presets-item {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem 1rem;
+        background: none;
+        border: none;
+        border-bottom: 1px solid #334155;
+        color: #e2e8f0;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+      .presets-item:last-child {
+        border-bottom: none;
+      }
+      .presets-item:hover {
+        background: #334155;
+        color: #38bdf8;
+      }
+      .presets-item strong {
+        display: block;
+        color: #fff;
+        margin-bottom: 0.2rem;
+      }
+
+      /* Main Page Wrapper */
+      .page-wrapper {
+        padding: 2rem 1rem 4rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Printable A4 Paper Document */
+      .paper {
+        background: #ffffff;
+        width: var(--paper-width);
+        min-height: var(--paper-min-height);
+        padding: 18mm 18mm 20mm 18mm;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.05);
+        border-radius: 2px;
+        position: relative;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      /* Document Header */
+      .doc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 2px solid var(--accent-blue);
+        padding-bottom: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .doc-logo-area {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-width: 50%;
+      }
+
+      .doc-logo-img {
+        max-height: 55px;
+        width: auto;
+        object-fit: contain;
+      }
+
+      .company-title-editable {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      .company-subtitle {
+        font-size: 0.85rem;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .company-details-box {
+        text-align: right;
+        font-size: 0.825rem;
+        color: #475569;
+        line-height: 1.45;
+      }
+
+      /* Info Grid (Issuer vs Client & Offer Metadata) */
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .info-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1rem 1.2rem;
+      }
+
+      .info-card-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--accent-dark);
+        margin-bottom: 0.6rem;
+        border-bottom: 1px dashed #cbd5e1;
+        padding-bottom: 0.4rem;
+      }
+
+      .editable-field {
+        width: 100%;
+        border: 1px solid transparent;
+        background: transparent;
+        font-family: inherit;
+        font-size: 0.875rem;
+        color: #1e293b;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        transition: all 0.15s ease;
+      }
+
+      .editable-field:hover {
+        background: rgba(29, 109, 255, 0.04);
+        border-color: #cbd5e1;
+      }
+
+      .editable-field:focus {
+        outline: none;
+        background: #fff;
+        border-color: var(--accent-blue);
+        box-shadow: 0 0 0 2px rgba(29, 109, 255, 0.2);
+      }
+
+      textarea.editable-field {
+        resize: vertical;
+        min-height: 3rem;
+      }
+
+      .meta-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+      }
+      .meta-table td {
+        padding: 0.3rem 0;
+        vertical-align: middle;
+      }
+      .meta-table td.label {
+        font-weight: 600;
+        color: #64748b;
+        width: 45%;
+      }
+
+      /* Document Title & Description */
+      .doc-title-section {
+        margin-bottom: 1.25rem;
+        text-align: center;
+        background: #f1f5f9;
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        border-left: 4px solid var(--accent-blue);
+      }
+
+      .doc-title-input {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: #0f172a;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .doc-note-input {
+        font-size: 0.85rem;
+        color: #475569;
+        text-align: center;
+        margin-top: 0.2rem;
+      }
+
+      /* Items Table */
+      .items-table-container {
+        margin-bottom: 1.5rem;
+      }
+
+      .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+      }
+
+      .items-table th {
+        background: #1e293b;
+        color: #ffffff;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        padding: 0.6rem 0.5rem;
+        text-align: left;
+        border: 1px solid #1e293b;
+      }
+
+      .items-table td {
+        border: 1px solid #e2e8f0;
+        padding: 0.4rem 0.5rem;
+        vertical-align: top;
+      }
+
+      .items-table tbody tr:nth-child(even) {
+        background: #f8fafc;
+      }
+
+      .col-num { width: 5%; text-align: center; font-weight: 600; color: #64748b; }
+      .col-desc { width: 45%; }
+      .col-unit { width: 10%; text-align: center; }
+      .col-qty { width: 10%; text-align: right; }
+      .col-price { width: 13%; text-align: right; }
+      .col-disc { width: 7%; text-align: right; }
+      .col-total { width: 14%; text-align: right; font-weight: 700; color: #0f172a; }
+      .col-actions { width: 4%; text-align: center; }
+
+      .text-center { text-align: center; }
+      .text-right { text-align: right; }
+
+      .btn-icon-danger {
+        background: none;
+        border: none;
+        color: #ef4444;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.2rem;
+        border-radius: 4px;
+        transition: background 0.15s ease;
+      }
+      .btn-icon-danger:hover {
+        background: #fee2e2;
+      }
+
+      .add-row-bar {
+        margin-top: 0.5rem;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .btn-add-row {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #f1f5f9;
+        color: var(--accent-dark);
+        border: 1px dashed var(--accent-blue);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .btn-add-row:hover {
+        background: rgba(29, 109, 255, 0.08);
+      }
+
+      /* Calculation Summary Box */
+      .summary-section {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .bank-info-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.9rem 1.1rem;
+        font-size: 0.825rem;
+      }
+
+      .bank-info-card h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: #475569;
+        letter-spacing: 0.05em;
+      }
+
+      .totals-card {
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+      }
+
+      .totals-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+      }
+
+      .totals-table td {
+        padding: 0.35rem 0;
+      }
+
+      .totals-table tr.total-row {
+        border-top: 2px solid #0f172a;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--accent-dark);
+      }
+
+      .totals-table tr.total-row td {
+        padding-top: 0.6rem;
+      }
+
+      .words-total-box {
+        margin-top: 0.6rem;
+        font-size: 0.775rem;
+        color: #475569;
+        font-style: italic;
+        background: #fff;
+        padding: 0.4rem 0.6rem;
+        border-radius: 4px;
+        border: 1px solid #e2e8f0;
+      }
+
+      /* Terms & Notes */
+      .terms-section {
+        margin-bottom: 2.5rem;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 1rem;
+      }
+
+      .terms-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #475569;
+        margin-bottom: 0.5rem;
+      }
+
+      .terms-textarea {
+        width: 100%;
+        font-size: 0.825rem;
+        color: #334155;
+        line-height: 1.5;
+        min-height: 4.5rem;
+      }
+
+      /* Signatures Section */
+      .signatures-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        margin-top: auto;
+        padding-top: 1.5rem;
+      }
+
+      .signature-box {
+        text-align: center;
+        font-size: 0.825rem;
+        color: #475569;
+      }
+
+      .signature-line {
+        border-bottom: 1px solid #94a3b8;
+        margin-bottom: 0.5rem;
+        height: 45px;
+      }
+
+      /* Saved Quotes Drawer / Modal */
+      .modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-backdrop.active {
+        display: flex;
+      }
+
+      .modal-card {
+        background: #1e293b;
+        color: #fff;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 550px;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 1.5rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #334155;
+        padding-bottom: 0.75rem;
+        margin-bottom: 1rem;
+      }
+
+      .modal-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .saved-quote-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #334155;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+      }
+
+      .only-print {
+        display: none;
+      }
+
+      /* PRINT STYLES - CRITICAL FOR CLEAN A4 PDF OUTPUT */
+      @media print {
+        @page {
+          size: A4 portrait;
+          margin: 12mm 12mm 12mm 12mm;
+        }
+
+        html, body {
+          background: #ffffff !important;
+          color: #000000 !important;
+          width: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        .no-print,
+        .toolbar-container,
+        .add-row-bar,
+        .col-actions,
+        .modal-backdrop {
+          display: none !important;
+        }
+
+        .only-print {
+          display: inline !important;
+        }
+
+        .page-wrapper {
+          padding: 0 !important;
+          margin: 0 !important;
+          display: block !important;
+        }
+
+        .paper {
+          box-shadow: none !important;
+          width: 100% !important;
+          min-height: auto !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          border-radius: 0 !important;
+        }
+
+        .editable-field {
+          border: none !important;
+          background: transparent !important;
+          padding: 0 !important;
+          box-shadow: none !important;
+        }
+
+        .editable-field:hover,
+        .editable-field:focus {
+          background: transparent !important;
+          border-color: transparent !important;
+          box-shadow: none !important;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        input[type="number"] {
+          -moz-appearance: textfield;
+        }
+
+        .info-card,
+        .bank-info-card,
+        .totals-card,
+        .doc-title-section {
+          background: #fafafa !important;
+          border-color: #d1d5db !important;
+        }
+
+        .items-table th {
+          background: #111827 !important;
+          color: #ffffff !important;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .items-table td {
+          border-color: #d1d5db !important;
+        }
+
+        .words-total-box {
+          background: #fff !important;
+          border-color: #e5e7eb !important;
+        }
+
+        .doc-header {
+          border-bottom: 1px solid #4b5563 !important;
+          padding-bottom: 5mm !important;
+          margin-bottom: 7mm !important;
+        }
+
+        .company-title-editable,
+        .company-subtitle,
+        .doc-title-section,
+        .terms-section {
+          display: none !important;
+        }
+
+        .doc-logo-area {
+          justify-content: center;
+          min-height: 22mm;
+        }
+
+        .doc-logo-img {
+          max-height: 18mm;
+        }
+
+        .company-details-box {
+          font-size: 9pt !important;
+          line-height: 1.25 !important;
+        }
+
+        .doc-print-title {
+          display: block !important;
+          margin: 8mm 0 10mm !important;
+          color: #111827 !important;
+          font-size: 17pt !important;
+          font-weight: 700 !important;
+          text-align: center !important;
+        }
+
+        .info-grid {
+          gap: 12mm !important;
+          margin-bottom: 8mm !important;
+        }
+
+        .info-card,
+        .bank-info-card,
+        .totals-card {
+          padding: 0 !important;
+          background: transparent !important;
+          border: 0 !important;
+          border-radius: 0 !important;
+        }
+
+        .info-card-title,
+        .bank-info-card h4 {
+          margin-bottom: 2mm !important;
+          padding-bottom: 0 !important;
+          color: #111827 !important;
+          border: 0 !important;
+          font-size: 8.5pt !important;
+        }
+
+        .meta-table,
+        .editable-field,
+        .items-table,
+        .totals-table {
+          font-size: 9pt !important;
+        }
+
+        .meta-table td {
+          padding: 0 !important;
+        }
+
+        .items-table-container {
+          margin-bottom: 8mm !important;
+        }
+
+        .items-table th {
+          padding: 2mm 1mm !important;
+          color: #111827 !important;
+          background: transparent !important;
+          border: 0 !important;
+          border-top: 1px solid #9ca3af !important;
+          border-bottom: 1px solid #9ca3af !important;
+          font-size: 8.5pt !important;
+        }
+
+        .items-table td {
+          padding: 1.5mm 1mm !important;
+          background: transparent !important;
+          border: 0 !important;
+          border-bottom: 1px solid #e5e7eb !important;
+        }
+
+        .items-table tbody tr:nth-child(even) {
+          background: transparent !important;
+        }
+
+        .summary-section {
+          grid-template-columns: 1.2fr 0.8fr !important;
+          gap: 12mm !important;
+          margin-bottom: 10mm !important;
+        }
+
+        .totals-table tr.total-row {
+          color: #111827 !important;
+          font-size: 10pt !important;
+        }
+
+        .words-total-box {
+          display: none !important;
+        }
+
+        .signatures-grid {
+          margin-top: 0 !important;
+          padding-top: 0 !important;
+        }
+
+        .signature-line {
+          height: 12mm !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Action Toolbar (Hidden in Print) -->
+    <div class="toolbar-container no-print">
+      <div class="toolbar-inner">
+        <div class="toolbar-title">
+          <span>⚡ FAZA Ponude</span>
+          <span class="badge">Static Generator v2.0</span>
+        </div>
+
+        <div class="toolbar-actions">
+          <button type="button" class="btn-tool btn-primary" id="btn-print" title="Otvorite prozor za štampu ili spremanje u PDF">
+            🖨️ Sačuvaj kao PDF / Printaj
+          </button>
+
+          <div class="presets-dropdown">
+            <button type="button" class="btn-tool btn-secondary">
+              ⚡ Brzi predlošci radova ▾
+            </button>
+            <div class="presets-menu">
+              <button type="button" class="presets-item" data-preset="stan">
+                <strong>Kompletna elektroinstalacija stana</strong>
+                Štemanje, polaganje kablova, razvodni ormar, fina montaža i ispitivanje.
+              </button>
+              <button type="button" class="presets-item" data-preset="ormar">
+                <strong>Razvodni ormar i osigurači</strong>
+                Ugradnja ormara, FID sklopke, automatskih osigurača i šemiranje.
+              </button>
+              <button type="button" class="presets-item" data-preset="fina">
+                <strong>Fina montaža utičnica i rasvjete</strong>
+                Montaža šuko utičnica, prekidača, LED panela i ukrasne rasvjete.
+              </button>
+              <button type="button" class="presets-item" data-preset="gromobran">
+                <strong>Gromobranska instalacija i uzemljenje</strong>
+                FeZn traka, mjerni spojevi i mjerenje otpora uzemljenja.
+              </button>
+              <button type="button" class="presets-item" data-preset="prazno">
+                <strong>Očisti sve (Prazan obrazac)</strong>
+                Započni novu praznu ponudu.
+              </button>
+            </div>
+          </div>
+
+          <button type="button" class="btn-tool btn-accent" id="btn-save-draft" title="Spremi trenutnu ponudu u preglednik">
+            💾 Sačuvaj nacrt
+          </button>
+
+          <button type="button" class="btn-tool btn-secondary" id="btn-open-saved" title="Pregledaj sačuvane ponude">
+            📂 Moje ponude (<span id="saved-count">0</span>)
+          </button>
+
+          <button type="button" class="btn-tool btn-danger" id="btn-reset" title="Poništi na početne postavke">
+            🔄 Resetuj
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paper Container -->
+    <div class="page-wrapper">
+      <main class="paper" id="quote-document">
+
+        <div>
+          <!-- Document Header -->
+          <header class="doc-header">
+            <div class="doc-logo-area">
+              <img src={`${baseURL}faza-logo.png`} alt="FAZA Logo" class="doc-logo-img" onerror="this.style.display='none'" />
+              <div>
+                <h1 class="company-title-editable">FAZA ELEKTROINSTALACIJE</h1>
+                <div class="company-subtitle">Profesionalne elektroinstalacije i održavanje</div>
+              </div>
+            </div>
+
+            <div class="company-details-box">
+              <input type="text" id="issuer-name" class="editable-field text-right" style="font-weight: 700;" value="FAZA Elektroinstalacije d.o.o." />
+              <input type="text" id="issuer-address" class="editable-field text-right" value="Ulica i broj, 71000 Sarajevo" />
+              <input type="text" id="issuer-id" class="editable-field text-right" value="JIB/ID: 4200000000000 | PDV: 200000000000" />
+              <input type="text" id="issuer-phone" class="editable-field text-right" value="Tel: +387 61 275 770" />
+              <input type="text" id="issuer-email" class="editable-field text-right" value="Email: elektroinstalacijefaza@gmail.com" />
+              <input type="text" id="issuer-web" class="editable-field text-right" value="Web: www.fazaelektro.ba" />
+            </div>
+          </header>
+
+          <!-- Document Title Banner -->
+          <div class="doc-title-section">
+            <input type="text" id="quote-title" class="editable-field doc-title-input" value="PONUDA ZA ELEKTROINSTALACIJSKE RADOVE" />
+            <input type="text" id="quote-subtitle" class="editable-field doc-note-input" value="Predračun za izvođenje radova i isporuku elektro materijala" />
+          </div>
+          <div class="doc-print-title only-print">Ponuda # <span id="print-quote-number"></span></div>
+
+          <!-- Info Grid: Kupac & Meta Details -->
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-card-title">Kupac / Naručilac radova</div>
+              <input type="text" id="client-name" class="editable-field" style="font-weight: 700;" placeholder="Naziv firme / Ime i prezime naručioca" value="Investitor d.o.o." />
+              <input type="text" id="client-address" class="editable-field" placeholder="Adresa klijenta (Ulica, Grad)" value="Zmaja od Bosne 14, Sarajevo" />
+              <input type="text" id="client-id" class="editable-field" placeholder="ID / JIB / OIB klijenta (opcionalno)" value="JIB: 4211111111111" />
+              <input type="text" id="client-contact" class="editable-field" placeholder="Kontakt osoba / Telefon / Email" value="Kontakt: Marko Marković (+387 62 111 222)" />
+            </div>
+
+            <div class="info-card">
+              <div class="info-card-title">Podaci o ponudi</div>
+              <table class="meta-table">
+                <tr>
+                  <td class="label">Broj ponude:</td>
+                  <td><input type="text" id="quote-number" class="editable-field" style="font-weight: 700; color: var(--accent-dark);" value="PON-2026/001" /></td>
+                </tr>
+                <tr>
+                  <td class="label">Datum izdavanja:</td>
+                  <td><input type="text" id="quote-date" class="editable-field" value="26.07.2026." /></td>
+                </tr>
+                <tr>
+                  <td class="label">Mjesto izdavanja:</td>
+                  <td><input type="text" id="quote-place" class="editable-field" value="Sarajevo" /></td>
+                </tr>
+                <tr>
+                  <td class="label">Rok važenja ponude:</td>
+                  <td><input type="text" id="quote-validity" class="editable-field" value="15 dana od dana izdavanja" /></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Table of Line Items -->
+          <div class="items-table-container">
+            <table class="items-table" id="items-table">
+              <thead>
+                <tr>
+                  <th class="col-num">#</th>
+                  <th class="col-desc">Opis radova / materijala</th>
+                  <th class="col-unit">J.M.</th>
+                  <th class="col-qty">Kol.</th>
+                  <th class="col-price">Cijena (KM)</th>
+                  <th class="col-disc">Pop.%</th>
+                  <th class="col-total">Ukupno (KM)</th>
+                  <th class="col-actions no-print"></th>
+                </tr>
+              </thead>
+              <tbody id="items-body">
+                <!-- Dynamic items rendered via JS -->
+              </tbody>
+            </table>
+
+            <div class="add-row-bar no-print">
+              <button type="button" class="btn-add-row" id="btn-add-row">
+                ➕ Dodaj novu stavku radova
+              </button>
+            </div>
+          </div>
+
+          <!-- Calculation Totals & Payment Info Grid -->
+          <div class="summary-section">
+            <div class="bank-info-card">
+              <h4>Podaci za uplatu & Banka</h4>
+              <table class="meta-table">
+                <tr>
+                  <td class="label">Banka:</td>
+                  <td><input type="text" id="bank-name" class="editable-field" value="UniCredit Bank d.d." /></td>
+                </tr>
+                <tr>
+                  <td class="label">Broj računa:</td>
+                  <td><input type="text" id="bank-iban" class="editable-field" style="font-weight: 700;" value="3389 0022 1234 5678" /></td>
+                </tr>
+                <tr>
+                  <td class="label">Poziv na broj:</td>
+                  <td><input type="text" id="bank-reference" class="editable-field" value="PON-2026/001" /></td>
+                </tr>
+              </table>
+
+              <div class="words-total-box" id="words-total-container">
+                <strong>Slovima:</strong> <span id="words-total-text">Jedna hiljada petsto KM i 00/100</span>
+              </div>
+            </div>
+
+            <div class="totals-card">
+              <table class="totals-table">
+                <tr>
+                  <td>Ukupno bez PDV-a:</td>
+                  <td class="text-right" id="subtotal-val">0.00 KM</td>
+                </tr>
+                <tr>
+                  <td>
+                    <select id="vat-rate-select" class="editable-field no-print" style="width: auto; font-weight: 600;">
+                      <option value="17">PDV (17%)</option>
+                      <option value="25">PDV (25%)</option>
+                      <option value="0">Bez PDV-a (Nismo u PDV-u)</option>
+                    </select>
+                    <span id="vat-label-print" class="only-print">PDV (17%):</span>
+                  </td>
+                  <td class="text-right" id="vat-val">0.00 KM</td>
+                </tr>
+                <tr class="total-row">
+                  <td>UKUPNO ZA PLAĆANJE:</td>
+                  <td class="text-right" id="grand-total-val">0.00 KM</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Terms & Conditions Section -->
+          <div class="terms-section">
+            <div class="terms-title">Uslovi izvođenja i napomene</div>
+            <textarea id="quote-terms" class="editable-field terms-textarea">1. Način plaćanja: 50% avans po prihvaćanju ponude, preostalih 50% po završetku i primopredaji radova.
+2. Rok izvođenja radova: Po dogovoru, cca 5-7 radnih dana od uplate avansa i ulaska u posjed.
+3. Garancija: 24 mjeseca na izvedene radove i ugrađenu opremu uz priložene garancijske listove proizvođača.
+4. Cijena uključuje sav potreban sitni elektromaterijal, transport i čišćenje radnog prostora.</textarea>
+          </div>
+        </div>
+
+        <!-- Signature Section -->
+        <footer class="signatures-grid">
+          <div class="signature-box">
+            <div class="signature-line"></div>
+            <div><strong>Ponudu izradio:</strong></div>
+            <div>FAZA Elektroinstalacije</div>
+          </div>
+          <div class="signature-box">
+            <div class="signature-line"></div>
+            <div><strong>Prihvatio naručilac:</strong></div>
+            <div>M.P. i Potpis ovlaštenog lica</div>
+          </div>
+        </footer>
+
+      </main>
+    </div>
+
+    <!-- Saved Quotes Modal -->
+    <div class="modal-backdrop no-print" id="saved-modal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">📂 Sačuvane ponude</h3>
+          <button type="button" class="btn-icon-danger" id="btn-close-modal" style="font-size: 1.4rem;">✕</button>
+        </div>
+        <div id="saved-quotes-list">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Client Script -->
+    <script is:inline>
+      // Default Items Presets
+      const PRESETS = {
+        stan: [
+          { desc: 'Štemanje zidova i polaganje kablova (NYM-J 3x1.5mm² i 3x2.5mm²)', unit: 'm', qty: 150, price: 6.50, disc: 0 },
+          { desc: 'Montaža i povezivanje ugradbenih razvodnih kutija (doza Ø60/Ø78)', unit: 'kom', qty: 45, price: 8.00, disc: 0 },
+          { desc: 'Isporuka, ugradnja i šemiranje razvodnog ormara (24M) sa FID sklopkom i 14 aut. osigurača', unit: 'paušal', qty: 1, price: 420.00, disc: 0 },
+          { desc: 'Fina montaža utičnica, prekidača i rasvjetnih tijela sa spajanjem', unit: 'kom', qty: 55, price: 9.00, disc: 0 },
+          { desc: 'Ispitivanje strujnih krugova, mjerenje otpora izolacije i puštanje u rad', unit: 'paušal', qty: 1, price: 150.00, disc: 0 }
+        ],
+        ormar: [
+          { desc: 'Ugradbeni razvodni ormar 36 modula sa vratima', unit: 'kom', qty: 1, price: 110.00, disc: 0 },
+          { desc: 'Glavna FID sklopka 40A / 0.03A 4p', unit: 'kom', qty: 1, price: 85.00, disc: 0 },
+          { desc: 'Automatski osigurači 16A (B/C karakteristika)', unit: 'kom', qty: 18, price: 9.50, disc: 0 },
+          { desc: 'Automatski osigurači 10A (B karakteristika)', unit: 'kom', qty: 8, price: 9.50, disc: 0 },
+          { desc: 'Montaža, šemiranje ormara i označavanje krugova', unit: 'paušal', qty: 1, price: 250.00, disc: 0 }
+        ],
+        fina: [
+          { desc: 'Montaža standardnih ŠUKO dvostrukih/jednostrukih utičnica', unit: 'kom', qty: 30, price: 8.50, disc: 0 },
+          { desc: 'Montaža naizmjeničnih i serijskih prekidača', unit: 'kom', qty: 14, price: 9.00, disc: 0 },
+          { desc: 'Montaža ugradbenih LED panela 18W/24W', unit: 'kom', qty: 12, price: 18.00, disc: 0 },
+          { desc: 'Montaža i spajanje dekorativnih lustera i zidnih lampi', unit: 'kom', qty: 6, price: 25.00, disc: 0 }
+        ],
+        gromobran: [
+          { desc: 'Polaganje pocinkovane trake FeZn 25x4mm u rov/temelj', unit: 'm', qty: 50, price: 12.00, disc: 0 },
+          { desc: 'Montaža mjerne kutije gromobrana sa ukrsnim komadima', unit: 'kom', qty: 4, price: 45.00, disc: 0 },
+          { desc: 'Mjerenje otpora rasprostiranja uzemljenja sa izradom zapisnika', unit: 'paušal', qty: 1, price: 180.00, disc: 0 }
+        ],
+        prazno: []
+      };
+
+      // Current active items array
+      let items = [...PRESETS.stan];
+
+      // Helper: Format currency
+      function formatMoney(amount) {
+        return amount.toLocaleString('bs-BA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' KM';
+      }
+
+      // Convert Number to Bosnian words for currency
+      function numberToWordsBS(n) {
+        const units = ['', 'jedna', 'dvije', 'tri', 'četiri', 'pet', 'šest', 'sedam', 'osam', 'devet'];
+        const tens = ['', 'deset', 'dvadeset', 'trideset', 'četrdeset', 'pedeset', 'šezdeset', 'sedamdeset', 'osamdeset', 'devedeset'];
+        const teens = ['deset', 'jedanaest', 'dvanaest', 'trinaest', 'četrnaest', 'petnaest', 'šesnaest', 'sedamnaest', 'osamnaest', 'devetnaest'];
+        const hundreds = ['', 'sto', 'dvjesto', 'tristo', 'četiri stotine', 'petsto', 'šeststo', 'sedamsto', 'osamsto', 'devetsto'];
+
+        const intPart = Math.floor(n);
+        const decPart = Math.round((n - intPart) * 100);
+
+        if (intPart === 0) return `Nula KM i ${decPart < 10 ? '0' + decPart : decPart}/100`;
+
+        function convertGroup(num) {
+          let str = '';
+          const h = Math.floor(num / 100);
+          const t = Math.floor((num % 100) / 10);
+          const u = num % 10;
+
+          if (h > 0) str += hundreds[h] + ' ';
+          if (t === 1) {
+            str += teens[u] + ' ';
+          } else {
+            if (t > 0) str += tens[t] + ' ';
+            if (u > 0) str += units[u] + ' ';
+          }
+          return str.trim();
+        }
+
+        let result = '';
+        const thousands = Math.floor(intPart / 1000);
+        const remainder = intPart % 1000;
+
+        if (thousands > 0) {
+          if (thousands === 1) result += 'Jedna hiljada ';
+          else if (thousands >= 2 && thousands <= 4) result += convertGroup(thousands) + ' hiljade ';
+          else result += convertGroup(thousands) + ' hiljada ';
+        }
+
+        if (remainder > 0) {
+          result += convertGroup(remainder) + ' ';
+        }
+
+        result = result.trim();
+        result = result.charAt(0).toUpperCase() + result.slice(1);
+        return `${result} KM i ${decPart < 10 ? '0' + decPart : decPart}/100`;
+      }
+
+      // Render items table
+      function renderItems() {
+        const tbody = document.getElementById('items-body');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        let subtotal = 0;
+
+        items.forEach((item, index) => {
+          const qty = parseFloat(item.qty) || 0;
+          const price = parseFloat(item.price) || 0;
+          const disc = parseFloat(item.disc) || 0;
+
+          const lineSubtotal = qty * price;
+          const lineTotal = lineSubtotal * (1 - disc / 100);
+          subtotal += lineTotal;
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="col-num">${index + 1}</td>
+            <td class="col-desc">
+              <textarea class="editable-field item-field" data-index="${index}" data-prop="desc">${item.desc}</textarea>
+            </td>
+            <td class="col-unit">
+              <input type="text" class="editable-field text-center item-field" data-index="${index}" data-prop="unit" value="${item.unit}" />
+            </td>
+            <td class="col-qty">
+              <input type="number" step="any" class="editable-field text-right item-field" data-index="${index}" data-prop="qty" value="${item.qty}" />
+            </td>
+            <td class="col-price">
+              <input type="number" step="0.01" class="editable-field text-right item-field" data-index="${index}" data-prop="price" value="${item.price}" />
+            </td>
+            <td class="col-disc">
+              <input type="number" step="1" min="0" max="100" class="editable-field text-right item-field" data-index="${index}" data-prop="disc" value="${item.disc}" />
+            </td>
+            <td class="col-total text-right">${formatMoney(lineTotal)}</td>
+            <td class="col-actions no-print text-center">
+              <button type="button" class="btn-icon-danger btn-delete-item" data-index="${index}" title="Obriši stavku">🗑️</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        // Calculate Totals
+        const vatRate = parseFloat(document.getElementById('vat-rate-select').value) || 0;
+        const vatAmount = subtotal * (vatRate / 100);
+        const grandTotal = subtotal + vatAmount;
+
+        document.getElementById('subtotal-val').innerText = formatMoney(subtotal);
+        document.getElementById('vat-val').innerText = formatMoney(vatAmount);
+        document.getElementById('grand-total-val').innerText = formatMoney(grandTotal);
+
+        // Update VAT Label for print
+        const vatLabel = vatRate > 0 ? `PDV (${vatRate}%):` : 'Bez PDV-a:';
+        document.getElementById('vat-label-print').innerText = vatLabel;
+
+        // Words
+        document.getElementById('words-total-text').innerText = numberToWordsBS(grandTotal);
+
+        // Synchronize quote reference in bank card
+        const qNum = document.getElementById('quote-number').value;
+        document.getElementById('bank-reference').value = qNum;
+        document.getElementById('print-quote-number').innerText = qNum;
+
+        // Auto save to current draft in localStorage
+        saveToLocalStorageCurrent();
+      }
+
+      // Add item
+      document.getElementById('btn-add-row')?.addEventListener('click', () => {
+        items.push({
+          desc: 'Nova stavka radova ili materijala',
+          unit: 'kom',
+          qty: 1,
+          price: 0,
+          disc: 0
+        });
+        renderItems();
+      });
+
+      // Item field edit & delete delegated listener
+      document.getElementById('items-body')?.addEventListener('input', (e) => {
+        const target = e.target;
+        if (target.classList.contains('item-field')) {
+          const index = parseInt(target.dataset.index);
+          const prop = target.dataset.prop;
+          let val = target.value;
+          if (prop === 'qty' || prop === 'price' || prop === 'disc') {
+            val = parseFloat(val) || 0;
+          }
+          items[index][prop] = val;
+          renderItems();
+        }
+      });
+
+      document.getElementById('items-body')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-delete-item');
+        if (btn) {
+          const index = parseInt(btn.dataset.index);
+          items.splice(index, 1);
+          renderItems();
+        }
+      });
+
+      // VAT Select listener
+      document.getElementById('vat-rate-select')?.addEventListener('change', renderItems);
+
+      // Quote Number input listener syncs bank reference
+      document.getElementById('quote-number')?.addEventListener('input', (e) => {
+        document.getElementById('bank-reference').value = e.target.value;
+        document.getElementById('print-quote-number').innerText = e.target.value;
+        saveToLocalStorageCurrent();
+      });
+
+      // Listen on all inputs for auto-save
+      document.querySelectorAll('.editable-field').forEach(input => {
+        input.addEventListener('input', saveToLocalStorageCurrent);
+      });
+
+      // Load Preset
+      document.querySelectorAll('[data-preset]').forEach(button => {
+        button.addEventListener('click', (e) => {
+          const key = e.currentTarget.dataset.preset;
+          if (PRESETS[key]) {
+            items = JSON.parse(JSON.stringify(PRESETS[key]));
+            renderItems();
+          }
+        });
+      });
+
+      // Print / PDF Button
+      document.getElementById('btn-print')?.addEventListener('click', () => {
+        window.print();
+      });
+
+      // LocalStorage Draft Management
+      const STORAGE_KEY_CURRENT = 'faza_ponuda_current';
+      const STORAGE_KEY_SAVED = 'faza_ponude_saved';
+
+      function getFormData() {
+        return {
+          issuerName: document.getElementById('issuer-name').value,
+          issuerAddress: document.getElementById('issuer-address').value,
+          issuerId: document.getElementById('issuer-id').value,
+          issuerPhone: document.getElementById('issuer-phone').value,
+          issuerEmail: document.getElementById('issuer-email').value,
+          issuerWeb: document.getElementById('issuer-web').value,
+          quoteTitle: document.getElementById('quote-title').value,
+          quoteSubtitle: document.getElementById('quote-subtitle').value,
+          clientName: document.getElementById('client-name').value,
+          clientAddress: document.getElementById('client-address').value,
+          clientId: document.getElementById('client-id').value,
+          clientContact: document.getElementById('client-contact').value,
+          quoteNumber: document.getElementById('quote-number').value,
+          quoteDate: document.getElementById('quote-date').value,
+          quotePlace: document.getElementById('quote-place').value,
+          quoteValidity: document.getElementById('quote-validity').value,
+          bankName: document.getElementById('bank-name').value,
+          bankIban: document.getElementById('bank-iban').value,
+          vatRate: document.getElementById('vat-rate-select').value,
+          quoteTerms: document.getElementById('quote-terms').value,
+          items: items
+        };
+      }
+
+      function setFormData(data) {
+        if (!data) return;
+        if (data.issuerName !== undefined) document.getElementById('issuer-name').value = data.issuerName;
+        if (data.issuerAddress !== undefined) document.getElementById('issuer-address').value = data.issuerAddress;
+        if (data.issuerId !== undefined) document.getElementById('issuer-id').value = data.issuerId;
+        if (data.issuerPhone !== undefined) document.getElementById('issuer-phone').value = data.issuerPhone;
+        if (data.issuerEmail !== undefined) document.getElementById('issuer-email').value = data.issuerEmail;
+        if (data.issuerWeb !== undefined) document.getElementById('issuer-web').value = data.issuerWeb;
+        if (data.quoteTitle !== undefined) document.getElementById('quote-title').value = data.quoteTitle;
+        if (data.quoteSubtitle !== undefined) document.getElementById('quote-subtitle').value = data.quoteSubtitle;
+        if (data.clientName !== undefined) document.getElementById('client-name').value = data.clientName;
+        if (data.clientAddress !== undefined) document.getElementById('client-address').value = data.clientAddress;
+        if (data.clientId !== undefined) document.getElementById('client-id').value = data.clientId;
+        if (data.clientContact !== undefined) document.getElementById('client-contact').value = data.clientContact;
+        if (data.quoteNumber !== undefined) document.getElementById('quote-number').value = data.quoteNumber;
+        if (data.quoteDate !== undefined) document.getElementById('quote-date').value = data.quoteDate;
+        if (data.quotePlace !== undefined) document.getElementById('quote-place').value = data.quotePlace;
+        if (data.quoteValidity !== undefined) document.getElementById('quote-validity').value = data.quoteValidity;
+        if (data.bankName !== undefined) document.getElementById('bank-name').value = data.bankName;
+        if (data.bankIban !== undefined) document.getElementById('bank-iban').value = data.bankIban;
+        if (data.vatRate !== undefined) document.getElementById('vat-rate-select').value = data.vatRate;
+        if (data.quoteTerms !== undefined) document.getElementById('quote-terms').value = data.quoteTerms;
+        if (Array.isArray(data.items)) items = data.items;
+        renderItems();
+      }
+
+      function saveToLocalStorageCurrent() {
+        try {
+          const data = getFormData();
+          localStorage.setItem(STORAGE_KEY_CURRENT, JSON.stringify(data));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      function loadFromLocalStorageCurrent() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY_CURRENT);
+          if (raw) {
+            const data = JSON.parse(raw);
+            setFormData(data);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      // Saved quotes list
+      function getSavedQuotes() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY_SAVED) || '[]');
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function updateSavedCount() {
+        const list = getSavedQuotes();
+        const el = document.getElementById('saved-count');
+        if (el) el.innerText = list.length;
+      }
+
+      document.getElementById('btn-save-draft')?.addEventListener('click', () => {
+        const qData = getFormData();
+        const saved = getSavedQuotes();
+        const title = prompt('Unesite naziv nacrta za spremanje:', `${qData.quoteNumber} - ${qData.clientName || 'Klijent'}`);
+        if (title) {
+          saved.unshift({
+            id: Date.now(),
+            title: title,
+            date: new Date().toLocaleString('bs-BA'),
+            data: qData
+          });
+          localStorage.setItem(STORAGE_KEY_SAVED, JSON.stringify(saved));
+          updateSavedCount();
+          alert('Ponuda uspješno sačuvana!');
+        }
+      });
+
+      // Modal Saved Quotes logic
+      const modal = document.getElementById('saved-modal');
+      document.getElementById('btn-open-saved')?.addEventListener('click', () => {
+        renderSavedList();
+        modal.classList.add('active');
+      });
+
+      document.getElementById('btn-close-modal')?.addEventListener('click', () => {
+        modal.classList.remove('active');
+      });
+
+      function renderSavedList() {
+        const listContainer = document.getElementById('saved-quotes-list');
+        if (!listContainer) return;
+        const saved = getSavedQuotes();
+        if (saved.length === 0) {
+          listContainer.innerHTML = '<p style="color: #94a3b8; text-align: center;">Nemate sačuvanih ponuda.</p>';
+          return;
+        }
+
+        listContainer.innerHTML = '';
+        saved.forEach((item, index) => {
+          const div = document.createElement('div');
+          div.className = 'saved-quote-item';
+          div.innerHTML = `
+            <div>
+              <strong style="color: #38bdf8;">${item.title}</strong>
+              <div style="font-size: 0.75rem; color: #94a3b8;">${item.date}</div>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" class="btn-tool btn-primary btn-load-saved" data-index="${index}" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">Učitaj</button>
+              <button type="button" class="btn-tool btn-danger btn-del-saved" data-index="${index}" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">✕</button>
+            </div>
+          `;
+          listContainer.appendChild(div);
+        });
+
+        document.querySelectorAll('.btn-load-saved').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const idx = parseInt(e.target.dataset.index);
+            const saved = getSavedQuotes();
+            if (saved[idx]) {
+              setFormData(saved[idx].data);
+              modal.classList.remove('active');
+            }
+          });
+        });
+
+        document.querySelectorAll('.btn-del-saved').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const idx = parseInt(e.target.dataset.index);
+            const saved = getSavedQuotes();
+            saved.splice(idx, 1);
+            localStorage.setItem(STORAGE_KEY_SAVED, JSON.stringify(saved));
+            updateSavedCount();
+            renderSavedList();
+          });
+        });
+      }
+
+      // Reset button
+      document.getElementById('btn-reset')?.addEventListener('click', () => {
+        if (confirm('Da li ste sigurni da želite poništiti ponudu na početne vrijednosti?')) {
+          localStorage.removeItem(STORAGE_KEY_CURRENT);
+          location.reload();
+        }
+      });
+
+      // Init on load
+      loadFromLocalStorageCurrent();
+      renderItems();
+      updateSavedCount();
+    </script>
+  </body>
+</html>
