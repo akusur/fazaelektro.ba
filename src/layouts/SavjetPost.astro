@@ -6,7 +6,7 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'savjeti'>['data'];
 
-const { title, description } = Astro.props;
+const { title, description, imageUrl, imageAlt } = Astro.props;
 ---
 
 <html lang="bs">
@@ -34,6 +34,12 @@ const { title, description } = Astro.props;
 			.title h1 {
 				margin: 0 0 0.5em 0;
 			}
+			.article-image {
+				width: 100%;
+				max-height: 520px;
+				margin: 0 auto 2rem;
+				object-fit: cover;
+			}
 		</style>
 	</head>
 
@@ -46,6 +52,7 @@ const { title, description } = Astro.props;
 						<h1>{title}</h1>
 						<hr />
 					</div>
+					<img class="article-image" src={imageUrl} alt={imageAlt} fetchpriority="high" />
 					<slot />
 				</div>
 			</article>

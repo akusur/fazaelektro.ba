@@ -30,6 +30,8 @@ const savjeti = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
+			imageUrl: z.string().url(),
+			imageAlt: z.string(),
 		}),
 });
 

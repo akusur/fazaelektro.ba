@@ -2,7 +2,8 @@
 title: 'Kako zamijeniti utičnicu (šuko) u kući ili stanu'
 description: 'Uputstvo za sigurnu zamjenu utičnice: isključenje napona, spajanje faze, nule i zaštitnog vodiča, te znakovi da je utičnica za zamjenu.'
 pubDate: 'Oct 06 2026'
-heroImage: '../../assets/blog-placeholder-3.jpg'
+imageUrl: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1200&q=80'
+imageAlt: 'Pažljiv rad na električnim priključcima u domu'
 ---
 
 > **Upozorenje:** Radovi na električnoj instalaciji su opasni po život. Ako niste sigurni, pozovite ovlaštenog električara. Ovaj tekst je informativnog karaktera.

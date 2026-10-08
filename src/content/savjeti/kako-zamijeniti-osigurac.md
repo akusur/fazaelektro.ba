@@ -2,7 +2,8 @@
 title: 'Kako zamijeniti osigurač u kućnom razvodnom ormariću'
 description: 'Korak po korak: kako sigurno zamijeniti osigurač ili automatski osigurač u stanu ili kući u Bosni i Hercegovini, i šta uraditi kada osigurač stalno ispada.'
 pubDate: 'Oct 08 2026'
-heroImage: '../../assets/blog-placeholder-1.jpg'
+imageUrl: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=80'
+imageAlt: 'Električar provjerava razvodni ormarić s osiguračima'
 ---
 
 > **Upozorenje:** Radovi na električnoj instalaciji su opasni po život. Ako niste sigurni, pozovite ovlaštenog električara. Ovaj tekst je informativnog karaktera.
