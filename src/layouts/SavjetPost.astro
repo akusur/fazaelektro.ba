@@ -4,12 +4,12 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'savjeti'>['data'];
 
 const { title, description } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="bs">
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
