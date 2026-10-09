@@ -2,7 +2,8 @@
 title: 'Vrste osigurača i njihove oznake: B, C, D karakteristike i jačine struje'
 description: 'Pregled vrsta osigurača u kućnoj instalaciji: topivi, automatski (LS), FID/RCD zaštitna sklopka, oznake B10, B16, C16 i izbor prema presjeku kabla.'
 pubDate: 'Oct 07 2026'
-heroImage: '../../assets/blog-placeholder-2.jpg'
+imageUrl: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=1200&q=80'
+imageAlt: 'Električar radi na kućnoj električnoj instalaciji'
 ---
 
 ## Osnovne vrste osigurača

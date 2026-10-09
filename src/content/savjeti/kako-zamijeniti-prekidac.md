@@ -2,7 +2,8 @@
 title: 'Kako zamijeniti svjetlosni prekidač: obični, serijski i izmjenični'
 description: 'Zamjena prekidača za svjetlo korak po korak. Razlike između običnog, serijskog, izmjeničnog i kroz-prekidača, i kako ih prepoznati.'
 pubDate: 'Oct 05 2026'
-heroImage: '../../assets/blog-placeholder-4.jpg'
+imageUrl: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=1200&q=80'
+imageAlt: 'Električar obavlja radove na instalaciji u domu'
 ---
 
 > **Upozorenje:** Radovi na električnoj instalaciji su opasni po život. Ako niste sigurni, pozovite ovlaštenog električara. Ovaj tekst je informativnog karaktera.

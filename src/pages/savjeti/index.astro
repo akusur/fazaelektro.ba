@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
@@ -19,37 +18,36 @@ const baseURL = import.meta.env.BASE_URL;
 		<BaseHead title={`Savjeti | ${SITE_TITLE}`} description="Praktični savjeti o elektroinstalacijama u BiH: osigurači, utičnice, prekidači i sigurnost." />
 		<style>
 			main {
-				width: 960px;
+				width: min(960px, calc(100% - 2em));
 			}
 			ul {
-				display: flex;
-				flex-wrap: wrap;
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
 				gap: 2rem;
 				list-style-type: none;
 				margin: 0;
 				padding: 0;
 			}
 			ul li {
-				width: calc(50% - 1rem);
+				min-width: 0;
 			}
 			ul li * {
 				text-decoration: none;
 				transition: 0.2s ease;
 			}
 			ul li:first-child {
-				width: 100%;
+				grid-column: 1 / -1;
 				margin-bottom: 1rem;
-				text-align: center;
 			}
-			ul li:first-child img {
+			ul li img {
 				width: 100%;
+				aspect-ratio: 16 / 9;
+				object-fit: cover;
+				margin-bottom: 0.75rem;
+				border-radius: 12px;
 			}
 			ul li:first-child .title {
 				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
 			}
 			ul li a {
 				display: block;
@@ -72,11 +70,8 @@ const baseURL = import.meta.env.BASE_URL;
 			}
 			@media (max-width: 720px) {
 				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
+					grid-template-columns: 1fr;
+					gap: 1.5rem;
 				}
 				ul li:first-child {
 					margin-bottom: 0;
@@ -96,9 +91,7 @@ const baseURL = import.meta.env.BASE_URL;
 						posts.map((post) => (
 							<li>
 								<a href={`${baseURL}savjeti/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
+									<img src={post.data.imageUrl} alt={post.data.imageAlt} loading="lazy" decoding="async" />
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
 										<FormattedDate date={post.data.pubDate} />

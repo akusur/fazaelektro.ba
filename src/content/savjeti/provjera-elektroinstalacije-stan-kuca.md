@@ -2,7 +2,8 @@
 title: 'Kada je vrijeme za obnovu elektroinstalacije? Znakovi dotrajale instalacije'
 description: 'Kako prepoznati staru i opasnu elektroinstalaciju u stanu ili kući u BiH: aluminijski vodiči, nedostatak uzemljenja, grijanje utičnica i česti ispadi osigurača.'
 pubDate: 'Oct 04 2026'
-heroImage: '../../assets/blog-placeholder-5.jpg'
+imageUrl: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=80'
+imageAlt: 'Pregled kućnog razvodnog ormarića i električne instalacije'
 ---
 
 Mnoge zgrade u Bosni i Hercegovini građene su prije 40 i više godina, a elektroinstalacija u njima često nije prilagođena savremenoj potrošnji (veš mašina, mašina za sudove, klima, indukcijska ploča).
