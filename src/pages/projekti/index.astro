@@ -19,7 +19,7 @@ const baseURL = import.meta.env.BASE_URL;
 		<BaseHead title={`Projekti | ${SITE_TITLE}`} description="Odabrani projekti elektroinstalacija koje je izvela firma FAZA." />
 		<style>
 			main {
-				width: 960px;
+				width: min(960px, calc(100% - 2rem));
 			}
 			ul {
 				display: flex;
