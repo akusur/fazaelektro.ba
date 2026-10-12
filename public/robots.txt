@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fazaelektro.ba/sitemap-index.xml

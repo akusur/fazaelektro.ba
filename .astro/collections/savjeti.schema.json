@@ -19,6 +19,13 @@
     "heroImage": {
       "type": "string"
     },
+    "imageUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "imageAlt": {
+      "type": "string"
+    },
     "$schema": {
       "type": "string"
     }
@@ -26,6 +33,8 @@
   "required": [
     "title",
     "description",
-    "pubDate"
+    "pubDate",
+    "imageUrl",
+    "imageAlt"
   ]
 }
